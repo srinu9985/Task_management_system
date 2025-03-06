@@ -1,0 +1,7 @@
+# Ignore Python cache and environment files
+*_pycache*/
+__pycache__/
+
+
+# Ignore models folder
+env/

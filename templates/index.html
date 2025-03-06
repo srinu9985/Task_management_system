@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("https://t4.ftcdn.net/jpg/06/91/06/51/360_F_691065187_VuWyVjiUP7nTrrOwrPIvli0Ywu4IcZUg.jpg"); 
+            background-size: cover; 
+            background-position: center; 
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-top : -50px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar .sign-up {
+            background: white;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .navbar .sign-up:hover {
+            background: #e0e0e0;
+        }
+
+        .main-content {
+            margin-top: 100px;
+        }
+
+        .main-content h1 {
+            font-size: 43px;
+            margin-bottom: 20px;
+        }
+
+        .main-content p {
+            font-size: 13px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .main-content .btn {
+            background: white;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .main-content .btn:hover {
+            background: #e0e0e0;
+        }
+
+        #teju {
+            margin-top: 160px;
+            font-size: 14px;
+        }
+
+        #teju a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        #teju a:hover {
+            text-decoration: underline;
+        }
+        .logo{
+            margin-left : -120px;
+            font-weight: bold;
+            margin-top : -60px;
+        }
+        .menu{
+            margin-right : -140px;
+            margin-top : -60px;
+        }
+        footer{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        #teju2{
+            float: right;
+            margin-bottom: 22px;
+        }
+        #teju1{
+            float: left;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">Company Logo</div>
+            <div class="menu">
+                <a href="#">Home</a>
+                <a href="#">Portfolio</a>
+                <a href="#">About</a>
+                <a href="#">Contact Us</a>
+                <a href="/login" class="sign-up">Log In</a>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <h1>Landing Page</h1>
+            <p>Abstract Background Website</p>
+            <a href="/register" class="btn">Sign Up</a>
+        </div>
+        
+        <div id="teju">
+            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a><br><br>
+            <p>&copy; 2025 TaskTracer Application. All Rights Reserved.</p>
+        </div>
+        <footer>
+    <div>
+        <p>
+          <div id="teju1">
+            <a href="mailto:ammupalleti@gmail.com" style="color: #fff; text-decoration: none; margin: 0 10px;">Email</a> 
+            <a href="https://linkedin.com/in/your-profile" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px;">LinkedIn</a> 
+            <a href="https://github.com/your-profile" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px;">GitHub</a> 
+            <a href="https://www.hackerrank.com/your-profile" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px;">HackerRank</a>
+            <a href="tel:8309450415" style="color: #fff; text-decoration: none;">Phone</a>
+          </div>
+          <div id="teju2">
+            Developed by Palleti Lakshme Tejasree 
+          </div>
+        </p>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

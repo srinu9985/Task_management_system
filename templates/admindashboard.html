@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMSaAOrSv44J9ePaTooUeSOJprnn00xwJeSQ&s");
+            background-size: cover; 
+            background-position: center; 
+            min-height: 100vh;
+        }
+        .sidebar {
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); 
+            /* background: #660033; */
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(38, 218, 149, 0.993);
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+        }
+        .table {
+            background-color: white;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background-color: rgba(255,255,255,0.1);
+        }
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            color: white;
+        }
+        .nav-item{
+            font-size: 20px;
+        }
+        #downloadButton{
+            /* margin-left: 1000px; */
+            margin-left: 627px;
+        }
+
+/* Chat icon button styling */
+.chat-icon-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.chat-icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Chatbot styling */
+.msger {
+    display: flex;
+    flex-flow: column;
+    width: 350px;
+    max-width: 100%;
+    height: 450px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    z-index: 999;
+}
+
+.msger-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: #fff;
+}
+
+.msger-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.msger-header-title img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.msger-chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.msg {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.msg-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.msg-bubble {
+    max-width: 250px;
+    padding: 10px;
+    border-radius: 15px;
+    background: #f0f0f0;
+}
+
+.msg-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.msg-info-name {
+    font-weight: bold;
+    font-size: 0.85em;
+}
+
+.msg-info-time {
+    font-size: 0.75em;
+    color: #999;
+}
+
+.left-msg .msg-bubble {
+    border-bottom-left-radius: 0;
+    background: #e6e6fa;
+}
+
+.right-msg {
+    flex-direction: row-reverse;
+}
+
+.right-msg .msg-bubble {
+    border-bottom-right-radius: 0;
+    background: #d9f2ff;
+}
+
+.right-msg .msg-img {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.msger-inputarea {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+.msger-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.msger-send-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.msger-send-btn:hover {
+    background: linear-gradient(45deg, #764ba2, #667eea);
+}
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showSection('home')">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('tasks')">
+                                Tasks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('reports')">
+                                Reports
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2 text-white">Admin Dashboard</h1>
+                    <button id="logoutBtn" class="btn btn-outline-light">Logout</button>
+                </div>
+
+                <div id="content" class="content p-4">
+                    <div id="home" class="section">
+                        <h2>Welcome to the Task Dashboard</h2>
+                        <button class="btn btn-gradient mt-3" onclick="showCreateTaskForm()">Create Task</button>
+                        <div id="createTaskForm" class="mt-4 d-none">
+                            <h3>Create New Task</h3>
+                            <form id="taskForm" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea id="description" name="description" class="form-control" placeholder="Description" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <select id="priority" name="priority" class="form-select" required>
+                                        <option value="">Select Priority</option>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <select id="status" name="status" class="form-select" required>
+                                        <option value="">Select Status</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="date" id="dueDate" name="dueDate" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3 position-relative">
+                                    <div id="assignedTo" name="assignedTo" class="form-control" onclick="toggleDropdown()" readonly>
+                                        Select candidates...
+                                    </div>
+                                    <div id="dropdownList" class="dropdown-menu w-100">
+                                        <!-- Dynamically populated users will be added here -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul id="selectedUsers" class="list-group mt-2">
+                                        <!-- Selected users will be displayed here -->
+                                    </ul>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-gradient">Create Task</button>
+                                    <button type="button" class="btn btn-secondary" onclick="hideCreateTaskForm()">Cancel</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tasks" class="section d-none">
+                        <h2>Task List</h2>
+                        <div class="mb-3">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Search tasks...">
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <select id="filterPriority" class="form-select">
+                                    <option value="">All Priorities</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="filterStatus" class="form-select">
+                                    <option value="">All Statuses</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="date" id="filterDate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="taskTable" class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>Assigned To</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="taskTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="reports" class="section d-none">
+                        <h2>Reports</h2>
+                        <button class="btn btn-gradient me-2" onclick="generateTaskReport()">Generate Task Report</button>
+                        <button class="btn btn-gradient" onclick="generateVisualReport()">Generate Visual Report</button>
+                        <a id="downloadButton" class="btn btn-gradient mt-2 d-none" href="#" download="task_report.txt">Download Report</a>
+                        <div id="reportContent" class="mt-4"></div>
+                    </div>
+                    <!-- Chatbot Container -->
+                    <div id="chatbotContainer" class="mt-4 d-none">
+                        <section class="msger">
+                            <header class="msger-header">
+                                <div class="msger-header-title">
+                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/chatbot-3d-icon-download-in-png-blend-fbx-gltf-file-formats--robotic-communication-talk-digital-marketing-pack-business-icons-8550733.png" alt="pic1">
+                                    <p>Task Name Generator</p>
+                                </div>
+                            </header>
+                            <main class="msger-chat">
+                                <div class="msg left-msg">
+                                    <div class="msg-img" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPWbTAKnOQnRFgTqlK8Jf6mt9MW1nDnfzr6rKuAucmhXohaGVj9lbQJOsuCo67QbQLenA&usqp=CAU);"></div>
+                                    <div class="msg-bubble">
+                                        <div class="msg-info">
+                                            <div class="msg-info-name">BOT</div>
+                                            <div class="msg-info-time">10:45</div>
+                                        </div>
+                                        <div class="msg-text">
+                                            Hi! I'm here to help you generate task names. Please provide a short task name, and I'll suggest three elaborate task names for you.
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                            <form class="msger-inputarea">
+                                <input type="text" class="msger-input" placeholder="Enter a short task name...">
+                                <button type="submit" class="msger-send-btn"><i class="fa fa-paper-plane"></i></button>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentUser = '';
+        const managerEmail = localStorage.getItem('userEmail');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCurrentUser();
+            fetchUsers();
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+        });
+        // Function to toggle chatbot visibility
+        function toggleChatbot() {
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            chatbotContainer.classList.toggle('d-none');
+        }
+
+        async function fetchCurrentUser() {
+            const email = localStorage.getItem('userEmail');
+            const password = localStorage.getItem('userPassword');
+            if (!email || !password) {
+                window.location.href = '/login';
+                return;
+            }
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${email}&password=${password}`
+            });
+            const data = await response.json();
+            if (data.message === "Login successful" && data.role === "manager") {
+                currentUser = data.username;
+                localStorage.setItem('userEmail', email);
+                showSection('home');
+            } else {
+                alert('Failed to authenticate user or insufficient permissions');
+                window.location.href = '/login';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userPassword');
+            window.location.href = '/login';
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('d-none');
+            });
+            document.getElementById(sectionId).classList.remove('d-none');
+            
+            // Update active state of sidebar links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.nav-link[onclick="showSection('${sectionId}')"]`).classList.add('active');
+            
+            if (sectionId === 'tasks') {
+                fetchTasks();
+            }
+        }
+
+        function showCreateTaskForm() {
+            document.getElementById('createTaskForm').classList.remove('d-none');
+        }
+
+        function hideCreateTaskForm() {
+            document.getElementById('taskForm').reset();
+            document.getElementById('createTaskForm').classList.add('d-none');
+        }
+
+        async function fetchTasks() {
+            try {
+                const searchQuery = document.getElementById('searchInput').value;
+                const priorityFilter = document.getElementById('filterPriority').value;
+                const statusFilter = document.getElementById('filterStatus').value;
+                const dateFilter = document.getElementById('filterDate').value;
+
+                const queryParams = new URLSearchParams({
+                    search: searchQuery,
+                    priority: priorityFilter,
+                    status: statusFilter,
+                    due_date: dateFilter,
+                    assignedManager: managerEmail
+                });
+                console.log("queryParams",queryParams)
+                const response = await fetch(`/get_tasks?${queryParams}`);
+                const tasks = await response.json();
+                
+                renderTasks(tasks);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        }
+
+        function renderTasks(tasks) {
+            const tableBody = document.getElementById('taskTableBody');
+            tableBody.innerHTML = '';
+            tasks.forEach(task => {
+                console.log("task._id",task._id)
+                const row = tableBody.insertRow();
+                row.dataset.taskId = task._id;
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.description}</td>
+                    <td>${task.priority}</td>
+                    <td>${task.status}</td>
+                    <td>${task.dueDate}</td>
+                    <td>${Array.isArray(task.assignedTo) ? task.assignedTo.join(', ') : task.assignedTo}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editTask('${task._id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTask('${task._id}')">Delete</button>
+                    </td>
+                `;
+            });
+        }
+        
+        async function createTask(event) {
+            event.preventDefault();
+            const form = event.target;
+            console.log(form);
+            if (!form.checkValidity()) {
+                event.stopPropagation();
+                form.classList.add('was-validated');
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const assignedTo = selectedUsers.join(','); 
+
+            const apiFormData = new FormData();
+            apiFormData.append('title', formData.get('title'));
+            apiFormData.append('description', formData.get('description'));
+            apiFormData.append('priority', formData.get('priority'));
+            apiFormData.append('status', formData.get('status'));
+            apiFormData.append('due_date', formData.get('dueDate'));
+            apiFormData.append('assigned_to', assignedTo);
+            apiFormData.append('assignedManager', managerEmail);
+
+            try {
+                const response = await fetch('/create_task', {
+                    method: 'POST',
+                    body: apiFormData
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('Task created successfully!');
+                    hideCreateTaskForm();
+                    showSection('tasks');
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to create task: ${errorData.detail || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error creating task:', error);
+                alert('An error occurred while creating the task');
+            }
+        }
+
+        function editTask(taskId) {
+            const row = document.querySelector(`tr[data-task-id="${taskId}"]`);
+            const cells = row.cells;
+            
+            for (let i = 0; i < cells.length - 1; i++) {
+                const cell = cells[i];
+                const originalContent = cell.textContent;
+                
+                if (i === 2) { // Priority dropdown
+                    cell.innerHTML = `
+                        <select class="form-select form-select-sm">
+                            <option value="High" ${originalContent === 'High' ? 'selected' : ''}>High</option>
+                            <option value="Medium" ${originalContent === 'Medium' ? 'selected' : ''}>Medium</option>
+                            <option value="Low" ${originalContent === 'Low' ? 'selected' : ''}>Low</option>
+                        </select>
+                    `;
+                } else if (i === 3) { // Status dropdown
+                    cell.innerHTML = `
+                        <select class="form-select form-select-sm">
+                            <option value="In Progress" ${originalContent === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Completed" ${originalContent === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                    `;
+                } else if (i === 4) { // Due Date
+                    cell.innerHTML = `<input type="date" class="form-control form-control-sm" value="${originalContent}">`;
+                } else if (i === 5) { // Assigned To
+                    cell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${originalContent}">`;
+                } else {
+                    cell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${originalContent}">`;
+                }
+            }
+            
+            const actionsCell = cells[cells.length - 1];
+            actionsCell.innerHTML = `
+                <button class="btn btn-sm btn-success" onclick="saveTask('${taskId}')">OK</button>
+                <button class="btn btn-sm btn-secondary" onclick="cancelEdit('${taskId}')">Cancel</button>
+            `;
+        }
+
+        async function saveTask(taskId) {
+            const row = document.querySelector(`tr[data-task-id="${taskId}"]`);
+            const cells = row.cells;
+            
+            const updatedTask = {
+                title: cells[0].querySelector('input').value,
+                description: cells[1].querySelector('input').value,
+                priority: cells[2].querySelector('select').value,
+                status: cells[3].querySelector('select').value,
+                dueDate: cells[4].querySelector('input').value,
+                assignedTo: cells[5].querySelector('input').value.split(',').map(user => user.trim())
+            };
+            
+            try {
+                const response = await fetch(`/update_task/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedTask)
+                });
+                
+                if (response.ok) {
+                    alert('Task updated successfully!');
+                    fetchTasks(); // Refresh the task list
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to update task: ${errorData.detail || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error updating task:', error);
+                alert('An error occurred while updating the task');
+            }
+        }
+
+        function cancelEdit(taskId) {
+            fetchTasks(); // This will re-render the tasks, effectively canceling the edit
+        }
+
+        async function deleteTask(taskId) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                try {
+                    const response = await fetch(`/delete_task/${taskId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('Task deleted successfully');
+                        fetchTasks();
+                    } else {
+                        alert('Failed to delete task');
+                    }
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                }
+            }
+        }
+
+        // async function generateTaskReport() {
+        //     try {
+        //         const response = await fetch('/generate_report', {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ managerEmail })
+        //         });
+        //         const data = await response.json();
+        //         document.getElementById('reportContent').innerHTML = `<pre class="bg-light p-3 mt-3">${data.report}</pre>`;
+
+        //         const blob = new Blob([data.report], { type: 'text/plain' });
+        //         const url = URL.createObjectURL(blob);
+        //         const downloadButton = document.getElementById('downloadButton');
+        //         downloadButton.href = url;
+        //         downloadButton.classList.remove('d-none');
+        //     } catch (error) {
+        //         console.error('Error generating task report:', error);
+        //     }
+        // }
+        
+        async function generateTaskReport() {
+            try {
+                const response = await fetch('/generate_report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ managerEmail })
+                });
+
+                const data = await response.json();
+                
+                document.getElementById('reportContent').innerHTML = `
+                    <h4>Generated Report:</h4>
+                    <pre class="bg-light p-3 mt-3">${data.report}</pre>
+                    <h4>AI Summary:</h4>
+                    <div class="bg-light p-3 mt-3">${data.summary}</div>
+                `;
+
+                const blob = new Blob([data.report], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const downloadButton = document.getElementById('downloadButton');
+                downloadButton.href = url;
+                downloadButton.classList.remove('d-none');
+            } catch (error) {
+                console.error('Error generating task report:', error);
+            }
+        }
+
+        // async function generateVisualReport() {
+        //     try {
+        //         const response = await fetch('/generate_task_report', {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ managerEmail })
+        //         });
+        //         const data = await response.json();
+        //         document.getElementById('reportContent').innerHTML = `<img src="${data.chart}" alt="Task Report Chart" class="img-fluid mt-3">`;
+        //         document.getElementById('downloadButton').classList.add('d-none');
+        //     } catch (error) {
+        //         console.error('Error generating visual report:', error);
+        //     }
+        // }
+        
+        async function generateVisualReport() {
+            try {
+                const response = await fetch('/generate_task_report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ managerEmail })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch the report');
+                }
+
+                const data = await response.json();
+
+                // Display the generated pie chart
+                document.getElementById('reportContent').innerHTML = `
+                    <img id="taskChart" src="${data.chart}" alt="Task Report Chart" class="img-fluid mt-3">
+                    <p class="mt-2"><strong>Insights:</strong> ${data.insights || "No insights available."}</p>
+                `;
+
+                // Show the download button and set the image source for download
+                const downloadButton = document.getElementById('downloadButton');
+                downloadButton.classList.remove('d-none');
+                downloadButton.onclick = function () {
+                    const link = document.createElement('a');
+                    link.href = data.chart;
+                    link.download = 'task_report.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                };
+
+            } catch (error) {
+                console.error('Error generating visual report:', error);
+                document.getElementById('reportContent').innerHTML = `<p class="text-danger">Failed to generate report. Please try again.</p>`;
+            }
+        }
+        
+        let selectedUsers = [];
+        const assignedToDropdown = document.getElementById("assignedTo");
+        const dropdownList = document.getElementById("dropdownList");
+        const selectedUsersList = document.getElementById("selectedUsers");
+
+        // Fetch and Populate Users in Dropdown
+        async function fetchUsers() {
+            try {
+                const response = await fetch("/get_users");
+                const data = await response.json();
+
+                dropdownList.innerHTML = ""; // Clear old options
+                data.users.forEach((user) => {
+                    const option = document.createElement("div");
+                    option.className = "dropdown-item";
+                    option.textContent = user;
+                    option.onclick = () => selectUser(user);
+                    dropdownList.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+
+       // Toggle dropdown visibility
+        function toggleDropdown() {
+            dropdownList.classList.toggle("show");
+        }
+
+        // Select a user and display it
+        function selectUser(user) {
+            if (!selectedUsers.includes(user)) {
+                selectedUsers.push(user);
+                updateSelectedUsers();
+            }
+        }
+
+        // Update the input with selected users
+        function updateSelectedUsers() {
+            assignedToDropdown.textContent = selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select candidates...";
+    
+            // Update the UI list
+            selectedUsersList.innerHTML = "";
+            selectedUsers.forEach((user) => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `
+                    ${user}
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeUser('${user}')">&times;</button>
+                `;
+                selectedUsersList.appendChild(li);
+            });
+        }
+
+        // Remove user when clicking "×"
+        function removeUser(user) {
+            selectedUsers = selectedUsers.filter(u => u !== user);
+            updateSelectedUsers();
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!document.querySelector(".mb-3.position-relative").contains(event.target)) {
+                dropdownList.classList.remove("show");
+            }
+        });
+       
+        document.getElementById('taskForm').addEventListener('submit', createTask);
+        document.getElementById('searchInput').addEventListener('input', fetchTasks);
+        document.getElementById('filterPriority').addEventListener('change', fetchTasks);
+        document.getElementById('filterStatus').addEventListener('change', fetchTasks);
+        document.getElementById('filterDate').addEventListener('change', fetchTasks);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const msgerForm = document.querySelector(".msger-inputarea");
+            const msgerInput = document.querySelector(".msger-input");
+            const msgerChat = document.querySelector(".msger-chat");
+            
+            // Initialize current time for messages
+            function formatDate(date) {
+                const h = "0" + date.getHours();
+                const m = "0" + date.getMinutes();
+                return `${h.slice(-2)}:${m.slice(-2)}`;
+            }
+            
+            // Add message to chat
+            function appendMessage(name, img, side, text) {
+                const msgHTML = `
+                    <div class="msg ${side}-msg">
+                        <div class="msg-img" style="background-image: url(${img})"></div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name">${name}</div>
+                                <div class="msg-info-time">${formatDate(new Date())}</div>
+                            </div>
+                            <div class="msg-text">${text}</div>
+                        </div>
+                    </div>
+                `;
+                msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                msgerChat.scrollTop += 500;
+            }
+            
+            // Function to call the backend endpoint
+            async function fetchRefinedSuggestions(userInput) {
+                try {
+                    const response = await fetch('http://localhost:8000/refine', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ short_task_name: userInput }),
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    const data = await response.json();
+                    return data.refined_names; // Assuming the backend returns a JSON object with a "suggestions" field
+                } catch (error) {
+                    console.error('Error fetching refined suggestions:', error);
+                    return null;
+                }
+            }
+            
+            // Handle form submission
+            msgerForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                
+                const msgText = msgerInput.value.trim();
+                if (!msgText) return;
+                
+                // Add user message
+                appendMessage("YOU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPWbTAKnOQnRFgTqlK8Jf6mt9MW1nDnfzr6rKuAucmhXohaGVj9lbQJOsuCo67QbQLenA&usqp=CAU", "right", msgText);
+                msgerInput.value = "";
+                
+                // Fetch refined suggestions from the backend
+                const refinedSuggestions = await fetchRefinedSuggestions(msgText);
+                console.log("refinedSuggestions",refinedSuggestions)
+                if (refinedSuggestions) {
+                    // Display the refined suggestions from the backend
+                    appendMessage("BOT", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPWbTAKnOQnRFgTqlK8Jf6mt9MW1nDnfzr6rKuAucmhXohaGVj9lbQJOsuCo67QbQLenA&usqp=CAU", "left", refinedSuggestions);
+                } else {
+                    print("There is an error in  extraction ")
+                    }
+            });
+        });
+    </script>
+    <!-- Chat Icon Button -->
+    <button class="chat-icon-btn" onclick="toggleChatbot()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+</body>
+</html>
+

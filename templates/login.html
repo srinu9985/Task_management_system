@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <style>
+        body {
+            background: url('https://www.shutterstock.com/image-vector/gradient-glassmorphism-horizontal-banner-vector-260nw-2416759079.jpg');
+            background-size: cover; 
+            background-position: center; 
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            margin-top : 180px;
+            margin-bottom: 1px;
+            /* background: #fff; */
+            padding: 20px;
+            padding-left: 50px;
+            padding-right: 70px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px 0px #888888;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #0d1318;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #d1d5da;
+            color : black;
+        }
+
+        #fail {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-bottom : 350px;
+            text-decoration: none;
+            color : navy;
+        }
+        .teju{
+            margin-top : 30px;
+            margin-left : 610px;
+            margin-bottom: 5px;
+        }
+        #one{
+            width :320px;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="" id="loginForm">
+        <input type="email" name="email" placeholder="Email" id="email" required>
+        <input type="password" name="password" placeholder="Password" id="password" required>
+        <input id="one" type="submit" value="Login">
+    </form>
+    <div class="teju">Not registered?</div> 
+    <a href="/register">Click here to register.</a>
+    <p id="fail"></p>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+        
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+        
+            const response = await fetch('/login', {
+                method: 'POST',
+                body: `email=${email}&password=${password}`,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+
+            const data = await response.json();
+ 
+            if (data.message === "Login successful") {
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userPassword', password);
+                if (data.role === "manager") {
+                    window.location.href = '/admindashboard';
+                } else {
+                    window.location.href = '/userdashboard';
+                }
+            } else {
+                if (data.message === "Incorrect password"){
+                    alert("Incorrect password. Please try again")
+                }
+                else{
+                    alert("Invalid credentials. Please sign up first!")
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
